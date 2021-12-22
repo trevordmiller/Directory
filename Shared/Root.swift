@@ -1,7 +1,7 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
+struct Root: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
@@ -9,13 +9,13 @@ struct ContentView: View {
         animation: .default)
     private var individuals: FetchedResults<Individual>
     
-    enum DownloadStates {
+    enum DownloadPhases {
         case progress
         case fail
         case success
     }
     
-    @State private var downloadStates = DownloadStates.progress
+    @State private var downloadPhase = DownloadPhases.progress
     
     func download() {
         Task {
@@ -25,9 +25,9 @@ struct ContentView: View {
                     .count > 0
                 
                 if hasRenderableIndividuals {
-                    self.downloadStates = DownloadStates.success
+                    downloadPhase = DownloadPhases.success
                 } else {
-                    self.downloadStates = DownloadStates.progress
+                    downloadPhase = DownloadPhases.progress
                     
                     let service = Service()
                     
@@ -46,16 +46,16 @@ struct ContentView: View {
                     
                     try viewContext.save()
                     
-                    self.downloadStates = DownloadStates.success
+                    downloadPhase = DownloadPhases.success
                 }
             } catch {
-                self.downloadStates = DownloadStates.fail
+                downloadPhase = DownloadPhases.fail
             }
         }
     }
     
     var body: some View {
-        switch downloadStates {
+        switch downloadPhase {
         case .progress:
             ProgressView()
                 .onAppear() {
@@ -73,8 +73,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct Root_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, Persistence.preview.container.viewContext)
+        Root().environment(\.managedObjectContext, Persistence.preview.container.viewContext)
     }
 }

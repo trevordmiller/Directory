@@ -1,12 +1,12 @@
 import SwiftUI
 
 @main
-struct DirectoryApp: App {
+struct Entry: App {
     let persistence = Persistence.shared
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Root()
                 .environment(\.managedObjectContext, persistence.container.viewContext)
         }
     }
