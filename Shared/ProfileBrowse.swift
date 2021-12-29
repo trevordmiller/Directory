@@ -16,15 +16,15 @@ struct ProfileBrowse: View {
                         } placeholder: {
                             ProgressView()
                         }
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(5)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(5)
 
                         Text(name)
                     }
                 }
             }
         }
-            .navigationTitle("Browse")
+        .navigationTitle("Browse")
     }
 }

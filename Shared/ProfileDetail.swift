@@ -22,7 +22,7 @@ struct ProfileDetail: View {
                 } placeholder: {
                     ProgressView()
                 }
-                    .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fit)
 
                 VStack(alignment: .leading) {
                     Label("Born on \(formatBirthdate(date: birthdate))", systemImage: "gift")
@@ -44,9 +44,9 @@ struct ProfileDetail: View {
                         Label("Force Sensitive", systemImage: "bolt")
                     }
                 }
-                    .padding()
+                .padding()
             }
-                .navigationTitle(name)
+            .navigationTitle(name)
         }
     }
 }

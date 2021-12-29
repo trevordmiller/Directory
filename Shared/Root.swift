@@ -75,6 +75,7 @@ struct Root: View {
 
 struct Root_Previews: PreviewProvider {
     static var previews: some View {
-        Root().environment(\.managedObjectContext, Persistence.preview.container.viewContext)
+        Root()
+            .environment(\.managedObjectContext, Persistence.preview.container.viewContext)
     }
 }

@@ -13,7 +13,7 @@ struct ErrorMessage: View {
             Text(description)
                 .foregroundColor(.secondary)
         }
-            .padding()
+        .padding()
     }
 }
 
