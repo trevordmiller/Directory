@@ -8,31 +8,31 @@ struct Root: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Individual.externalId, ascending: true)],
         animation: .default)
     private var individuals: FetchedResults<Individual>
-    
+
     enum DownloadPhases {
         case progress
         case fail
         case success
     }
-    
+
     @State private var downloadPhase = DownloadPhases.progress
-    
+
     func download() {
         Task {
             do {
                 let hasRenderableIndividuals = individuals
                     .filter({ $0.firstName != nil })
                     .count > 0
-                
+
                 if hasRenderableIndividuals {
                     downloadPhase = DownloadPhases.success
                 } else {
                     downloadPhase = DownloadPhases.progress
-                    
+
                     let service = Service()
-                    
+
                     let individualResults = try await service.getIndividuals()
-                        
+
                     for individualResult in individualResults {
                         let individual = Individual(context: viewContext)
                         individual.externalId = individualResult.id
@@ -43,9 +43,9 @@ struct Root: View {
                         individual.forceSensitive = individualResult.forceSensitive
                         individual.affiliation = individualResult.affiliation
                     }
-                    
+
                     try viewContext.save()
-                    
+
                     downloadPhase = DownloadPhases.success
                 }
             } catch {
@@ -53,18 +53,18 @@ struct Root: View {
             }
         }
     }
-    
+
     var body: some View {
         switch downloadPhase {
         case .progress:
             ProgressView()
-                .onAppear() {
+                .onAppear {
                     download()
                 }
-            
+
         case .fail:
             ErrorMessage(description: "The data wasn't able to download.")
-            
+
         case .success:
             NavigationView {
                 ProfileBrowse(individuals: individuals)

@@ -4,7 +4,7 @@ class LaunchTests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
-    
+
     func testRendersProfileBrowseWithData() throws {
         let app = XCUIApplication()
         app.launch()

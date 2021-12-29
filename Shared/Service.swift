@@ -5,7 +5,7 @@ struct Service {
         case brokenURL
         case missingData
     }
-    
+
     struct IndividualResult: Codable, Identifiable {
         let id: Int32
         let firstName: String
@@ -15,22 +15,22 @@ struct Service {
         let forceSensitive: Bool
         let affiliation: String
     }
-    
+
     struct RootResults: Codable {
         let individuals: [IndividualResult]
     }
-    
+
     func getIndividuals() async throws -> [IndividualResult] {
         guard let url = URL(string: "https://edge.ldscdn.org/mobile/interview/directory") else {
             throw ServiceError.brokenURL
         }
-        
+
         let (data, _) = try await URLSession.shared.data(from: url)
-        
+
         if data.isEmpty {
             throw ServiceError.missingData
         }
-        
+
         let rootResults = try JSONDecoder().decode(RootResults.self, from: data)
         return rootResults.individuals
     }
