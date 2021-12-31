@@ -9,13 +9,13 @@ struct Root: View {
         animation: .default)
     private var individuals: FetchedResults<Individual>
 
-    enum DownloadPhases {
+    enum DownloadPhase {
         case progress
         case fail
         case success
     }
 
-    @State private var downloadPhase = DownloadPhases.progress
+    @State private var downloadPhase = DownloadPhase.progress
 
     func download() {
         Task {
@@ -25,9 +25,9 @@ struct Root: View {
                     .count > 0
 
                 if hasRenderableIndividuals {
-                    downloadPhase = DownloadPhases.success
+                    downloadPhase = .success
                 } else {
-                    downloadPhase = DownloadPhases.progress
+                    downloadPhase = .progress
 
                     let service = Service()
 
@@ -46,10 +46,10 @@ struct Root: View {
 
                     try viewContext.save()
 
-                    downloadPhase = DownloadPhases.success
+                    downloadPhase = .success
                 }
             } catch {
-                downloadPhase = DownloadPhases.fail
+                downloadPhase = .fail
             }
         }
     }
